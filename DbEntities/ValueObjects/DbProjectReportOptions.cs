@@ -1,8 +1,7 @@
-using ValueObjects;
-
 namespace DbEntities.ValueObjects;
 
-public record DbProjectReportOptions : DbValueObject
+[Owned]
+public record DbProjectReportOptions
 {
     public DbProjectReportOptions(
         string signeeName,
@@ -20,6 +19,4 @@ public record DbProjectReportOptions : DbValueObject
 
     public bool IncludeCompassInFooter { get; protected init; }
     public int CompassAngle { get; protected init; }
-
-    public CompanyContactInfo? CompanyContactInfo { get; protected init; }
 }

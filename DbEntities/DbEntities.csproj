@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Enumerations\Enumerations.csproj" />
-    <ProjectReference Include="..\ValueObjects\ValueObjects.csproj" />
   </ItemGroup>
 
 </Project>

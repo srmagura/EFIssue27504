@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataContext.Migrations
 {
     [DbContext(typeof(AppDataContext))]
-    [Migration("20220312180244_Initial")]
+    [Migration("20220312180732_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -228,58 +228,12 @@ namespace DataContext.Migrations
                                 .HasForeignKey("DbImportId");
                         });
 
-                    b.OwnsOne("ValueObjects.Percentage", "PercentComplete", b1 =>
-                        {
-                            b1.Property<Guid>("DbImportId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<decimal>("Value")
-                                .HasColumnType("decimal(18,4)");
-
-                            b1.HasKey("DbImportId");
-
-                            b1.ToTable("Imports");
-
-                            b1.WithOwner()
-                                .HasForeignKey("DbImportId");
-                        });
-
                     b.Navigation("File")
                         .IsRequired();
 
                     b.Navigation("Organization");
 
-                    b.Navigation("PercentComplete")
-                        .IsRequired();
-
                     b.Navigation("Project");
-                });
-
-            modelBuilder.Entity("DbEntities.DbOrganization", b =>
-                {
-                    b.OwnsOne("ValueObjects.OrganizationShortName", "ShortName", b1 =>
-                        {
-                            b1.Property<Guid>("DbOrganizationId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasMaxLength(16)
-                                .HasColumnType("nvarchar(16)");
-
-                            b1.HasKey("DbOrganizationId");
-
-                            b1.HasIndex("Value")
-                                .IsUnique();
-
-                            b1.ToTable("Organizations");
-
-                            b1.WithOwner()
-                                .HasForeignKey("DbOrganizationId");
-                        });
-
-                    b.Navigation("ShortName")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("DbEntities.DbPage", b =>
@@ -406,204 +360,7 @@ namespace DataContext.Migrations
 
                             b1.WithOwner()
                                 .HasForeignKey("DbProjectId");
-
-                            b1.OwnsOne("ValueObjects.CompanyContactInfo", "CompanyContactInfo", b2 =>
-                                {
-                                    b2.Property<Guid>("DbProjectReportOptionsDbProjectId")
-                                        .HasColumnType("uniqueidentifier");
-
-                                    b2.Property<string>("Name")
-                                        .IsRequired()
-                                        .HasMaxLength(128)
-                                        .HasColumnType("nvarchar(128)");
-
-                                    b2.HasKey("DbProjectReportOptionsDbProjectId");
-
-                                    b2.ToTable("Projects");
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("DbProjectReportOptionsDbProjectId");
-
-                                    b2.OwnsOne("ValueObjects.EmailAddress", "Email", b3 =>
-                                        {
-                                            b3.Property<Guid>("CompanyContactInfoDbProjectReportOptionsDbProjectId")
-                                                .HasColumnType("uniqueidentifier");
-
-                                            b3.Property<string>("Value")
-                                                .IsRequired()
-                                                .HasMaxLength(128)
-                                                .HasColumnType("nvarchar(128)");
-
-                                            b3.HasKey("CompanyContactInfoDbProjectReportOptionsDbProjectId");
-
-                                            b3.ToTable("Projects");
-
-                                            b3.WithOwner()
-                                                .HasForeignKey("CompanyContactInfoDbProjectReportOptionsDbProjectId");
-                                        });
-
-                                    b2.OwnsOne("ValueObjects.PhoneNumber", "Phone", b3 =>
-                                        {
-                                            b3.Property<Guid>("CompanyContactInfoDbProjectReportOptionsDbProjectId")
-                                                .HasColumnType("uniqueidentifier");
-
-                                            b3.Property<string>("Value")
-                                                .IsRequired()
-                                                .HasMaxLength(16)
-                                                .HasColumnType("nvarchar(16)");
-
-                                            b3.HasKey("CompanyContactInfoDbProjectReportOptionsDbProjectId");
-
-                                            b3.ToTable("Projects");
-
-                                            b3.WithOwner()
-                                                .HasForeignKey("CompanyContactInfoDbProjectReportOptionsDbProjectId");
-                                        });
-
-                                    b2.OwnsOne("ValueObjects.Url", "Url", b3 =>
-                                        {
-                                            b3.Property<Guid>("CompanyContactInfoDbProjectReportOptionsDbProjectId")
-                                                .HasColumnType("uniqueidentifier");
-
-                                            b3.Property<string>("Value")
-                                                .IsRequired()
-                                                .HasColumnType("nvarchar(max)");
-
-                                            b3.HasKey("CompanyContactInfoDbProjectReportOptionsDbProjectId");
-
-                                            b3.ToTable("Projects");
-
-                                            b3.WithOwner()
-                                                .HasForeignKey("CompanyContactInfoDbProjectReportOptionsDbProjectId");
-                                        });
-
-                                    b2.Navigation("Email")
-                                        .IsRequired();
-
-                                    b2.Navigation("Phone")
-                                        .IsRequired();
-
-                                    b2.Navigation("Url")
-                                        .IsRequired();
-                                });
-
-                            b1.Navigation("CompanyContactInfo");
                         });
-
-                    b.OwnsOne("ValueObjects.PartialAddress", "Address", b1 =>
-                        {
-                            b1.Property<Guid>("DbProjectId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("City")
-                                .HasMaxLength(64)
-                                .HasColumnType("nvarchar(64)");
-
-                            b1.Property<bool?>("HasValue")
-                                .HasColumnType("bit");
-
-                            b1.Property<string>("Line1")
-                                .HasMaxLength(64)
-                                .HasColumnType("nvarchar(64)");
-
-                            b1.Property<string>("Line2")
-                                .HasMaxLength(64)
-                                .HasColumnType("nvarchar(64)");
-
-                            b1.Property<string>("State")
-                                .HasMaxLength(16)
-                                .HasColumnType("nvarchar(16)");
-
-                            b1.HasKey("DbProjectId");
-
-                            b1.ToTable("Projects");
-
-                            b1.WithOwner()
-                                .HasForeignKey("DbProjectId");
-
-                            b1.OwnsOne("ValueObjects.PostalCode", "PostalCode", b2 =>
-                                {
-                                    b2.Property<Guid>("PartialAddressDbProjectId")
-                                        .HasColumnType("uniqueidentifier");
-
-                                    b2.Property<string>("Value")
-                                        .IsRequired()
-                                        .HasMaxLength(16)
-                                        .HasColumnType("nvarchar(16)");
-
-                                    b2.HasKey("PartialAddressDbProjectId");
-
-                                    b2.ToTable("Projects");
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("PartialAddressDbProjectId");
-                                });
-
-                            b1.Navigation("PostalCode");
-                        });
-
-                    b.OwnsOne("ValueObjects.ProjectBudgetOptions", "BudgetOptions", b1 =>
-                        {
-                            b1.Property<Guid>("DbProjectId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<bool>("ShowPricePerSquareFoot")
-                                .HasColumnType("bit");
-
-                            b1.Property<bool>("ShowPricingInBudgetBreakdown")
-                                .HasColumnType("bit");
-
-                            b1.HasKey("DbProjectId");
-
-                            b1.ToTable("Projects");
-
-                            b1.WithOwner()
-                                .HasForeignKey("DbProjectId");
-
-                            b1.OwnsOne("ValueObjects.Percentage", "CostAdjustment", b2 =>
-                                {
-                                    b2.Property<Guid>("ProjectBudgetOptionsDbProjectId")
-                                        .HasColumnType("uniqueidentifier");
-
-                                    b2.Property<decimal>("Value")
-                                        .HasColumnType("decimal(18,4)");
-
-                                    b2.HasKey("ProjectBudgetOptionsDbProjectId");
-
-                                    b2.ToTable("Projects");
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("ProjectBudgetOptionsDbProjectId");
-                                });
-
-                            b1.OwnsOne("ValueObjects.Percentage", "DepositPercentage", b2 =>
-                                {
-                                    b2.Property<Guid>("ProjectBudgetOptionsDbProjectId")
-                                        .HasColumnType("uniqueidentifier");
-
-                                    b2.Property<decimal>("Value")
-                                        .HasColumnType("decimal(18,4)");
-
-                                    b2.HasKey("ProjectBudgetOptionsDbProjectId");
-
-                                    b2.ToTable("Projects");
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("ProjectBudgetOptionsDbProjectId");
-                                });
-
-                            b1.Navigation("CostAdjustment")
-                                .IsRequired();
-
-                            b1.Navigation("DepositPercentage")
-                                .IsRequired();
-                        });
-
-                    b.Navigation("Address")
-                        .IsRequired();
-
-                    b.Navigation("BudgetOptions")
-                        .IsRequired();
 
                     b.Navigation("Organization");
 

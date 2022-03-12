@@ -1,5 +1,4 @@
 using DbEntities.ValueObjects;
-using ValueObjects;
 
 namespace DbEntities;
 
@@ -23,8 +22,6 @@ public class DbImport : DbEntity
 
     public DateTimeOffset? ProcessingStartUtc { get; protected set; }
     public DateTimeOffset? ProcessingEndUtc { get; protected set; }
-
-    public Percentage PercentComplete { get; protected set; } = new Percentage(0);
 
     public string? ErrorMessage { get; protected set; }
 

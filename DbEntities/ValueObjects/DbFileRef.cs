@@ -1,8 +1,7 @@
-using ValueObjects;
-
 namespace DbEntities.ValueObjects
 {
-    public record DbFileRef : DbValueObject
+    [Owned]
+    public record DbFileRef
     {
         public DbFileRef(Guid fileId, string fileType)
         {
@@ -12,7 +11,7 @@ namespace DbEntities.ValueObjects
 
         public Guid FileId { get; protected init; }
 
-        [MaxLength(FieldLengths.FileRef.FileType)]
+        [MaxLength(32)]
         public string FileType { get; protected init; }
     }
 }

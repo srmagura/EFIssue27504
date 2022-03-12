@@ -30,7 +30,6 @@ namespace DataContext.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IsHost = table.Column<bool>(type: "bit", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    ShortName_Value = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     DateCreatedUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
                 },
@@ -48,29 +47,15 @@ namespace DataContext.Migrations
                     Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     ShortName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address_HasValue = table.Column<bool>(type: "bit", nullable: true),
-                    Address_Line1 = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    Address_Line2 = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    Address_City = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    Address_State = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: true),
-                    Address_PostalCode_Value = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: true),
                     CustomerName = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     EstimatedSquareFeet = table.Column<int>(type: "int", nullable: false),
                     Photo_FileId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Photo_FileType = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true),
-                    BudgetOptions_CostAdjustment_Value = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
-                    BudgetOptions_DepositPercentage_Value = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
-                    BudgetOptions_ShowPricingInBudgetBreakdown = table.Column<bool>(type: "bit", nullable: false),
-                    BudgetOptions_ShowPricePerSquareFoot = table.Column<bool>(type: "bit", nullable: false),
                     ReportOptions_SigneeName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ReportOptions_PreparerName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ReportOptions_TitleBlockSheetNameFontSize = table.Column<int>(type: "int", nullable: false),
                     ReportOptions_IncludeCompassInFooter = table.Column<bool>(type: "bit", nullable: false),
                     ReportOptions_CompassAngle = table.Column<int>(type: "int", nullable: false),
-                    ReportOptions_CompanyContactInfo_Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: true),
-                    ReportOptions_CompanyContactInfo_Url_Value = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ReportOptions_CompanyContactInfo_Email_Value = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: true),
-                    ReportOptions_CompanyContactInfo_Phone_Value = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     DesignerLockedUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     DateCreatedUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
@@ -99,7 +84,6 @@ namespace DataContext.Migrations
                     Status = table.Column<int>(type: "int", nullable: false),
                     ProcessingStartUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     ProcessingEndUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    PercentComplete_Value = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
                     ErrorMessage = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateCreatedUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
                 },
@@ -168,12 +152,6 @@ namespace DataContext.Migrations
                 name: "IX_Organizations_Name",
                 table: "Organizations",
                 column: "Name",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Organizations_ShortName_Value",
-                table: "Organizations",
-                column: "ShortName_Value",
                 unique: true);
 
             migrationBuilder.CreateIndex(

@@ -17,10 +17,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbEntities", "DbEntities\Db
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Enumerations", "Enumerations\Enumerations.csproj", "{4960F7BD-5179-4E1F-A294-16FE917B6F01}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fields", "Fields\Fields.csproj", "{4FF396BB-961F-427C-A82A-A4E05AB3E94F}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ValueObjects", "ValueObjects\ValueObjects.csproj", "{1E5E1B63-893D-4B30-B8B9-984767F3A23A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,14 +35,6 @@ Global
 		{4960F7BD-5179-4E1F-A294-16FE917B6F01}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4960F7BD-5179-4E1F-A294-16FE917B6F01}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4960F7BD-5179-4E1F-A294-16FE917B6F01}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4FF396BB-961F-427C-A82A-A4E05AB3E94F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4FF396BB-961F-427C-A82A-A4E05AB3E94F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4FF396BB-961F-427C-A82A-A4E05AB3E94F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4FF396BB-961F-427C-A82A-A4E05AB3E94F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1E5E1B63-893D-4B30-B8B9-984767F3A23A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1E5E1B63-893D-4B30-B8B9-984767F3A23A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1E5E1B63-893D-4B30-B8B9-984767F3A23A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1E5E1B63-893D-4B30-B8B9-984767F3A23A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -4,11 +4,6 @@ namespace DbEntities;
 
 public class DbPage : DbEntity
 {
-#nullable disable
-    [Obsolete("Entity Framework only.")]
-    protected DbPage() { }
-#nullable enable
-
     public DbFileRef Pdf { get; set; }
     public DbFileRef Thumbnail { get; set; }
 
@@ -20,10 +15,10 @@ public class DbPage : DbEntity
 
     public int Index { get; set; }
 
-    [MaxLength(FieldLengths.Page.SheetNumberSuffix)]
+    [MaxLength(8)]
     public string? SheetNumberSuffix { get; set; }
 
-    [MaxLength(FieldLengths.Page.SheetNameSuffix)]
+    [MaxLength(32)]
     public string? SheetNameSuffix { get; set; }
 
     public bool IsActive { get; set; } = true;
