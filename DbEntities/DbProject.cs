@@ -54,15 +54,9 @@ public class DbProject : DbEntity
 
     public bool IsActive { get; set; } = true;
 
-    public Guid? DesignerLockedById { get; set; }
-    public DbUser? DesignerLockedBy { get; set; }
-
     public DateTimeOffset? DesignerLockedUtc { get; set; }
 
     public List<DbImport> Imports { get; set; } = new();
-    public List<DbProjectPublication> ProjectPublications { get; set; } = new();
-    public List<DbReport> Reports { get; set; } = new();
-    public List<DbProductKitReference> ProductKitReferences { get; set; } = new();
 
     public static void OnModelCreating(ModelBuilder mb)
     {
@@ -73,21 +67,6 @@ public class DbProject : DbEntity
         mb.Entity<DbProject>()
             .HasMany(p => p.Imports)
             .WithOne(i => i.Project)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        mb.Entity<DbProject>()
-            .HasMany(p => p.ProjectPublications)
-            .WithOne(i => i.Project)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        mb.Entity<DbProject>()
-            .HasMany(p => p.Reports)
-            .WithOne(i => i.Project)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        mb.Entity<DbProject>()
-            .HasMany(p => p.ProductKitReferences)
-            .WithOne(r => r.Project)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

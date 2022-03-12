@@ -24,8 +24,6 @@ public class DbOrganization : DbEntity
 
     public bool IsActive { get; set; } = true;
 
-    public List<DbUser> Users { get; protected set; } = new();
-
     public static void OnModelCreating(ModelBuilder mb)
     {
         mb.Entity<DbOrganization>()
@@ -38,10 +36,5 @@ public class DbOrganization : DbEntity
                 sn.HasIndex(p => p.Value)
                     .IsUnique(true);
             });
-
-        mb.Entity<DbOrganization>()
-            .HasMany(o => o.Users)
-            .WithOne(u => u.Organization)
-            .OnDelete(DeleteBehavior.Restrict);
     }
 }

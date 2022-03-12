@@ -20,9 +20,6 @@ public class DbPage : DbEntity
 
     public int Index { get; set; }
 
-    public Guid? SheetTypeId { get; set; }
-    public DbSheetType? SheetType { get; set; }
-
     [MaxLength(FieldLengths.Page.SheetNumberSuffix)]
     public string? SheetNumberSuffix { get; set; }
 
@@ -31,13 +28,7 @@ public class DbPage : DbEntity
 
     public bool IsActive { get; set; } = true;
 
-    public List<DbDesignerData> DesignerData { get; set; } = new();
-
     public static void OnModelCreating(ModelBuilder mb)
     {
-        mb.Entity<DbPage>()
-            .HasMany(p => p.DesignerData)
-            .WithOne(d => d.Page)
-            .OnDelete(DeleteBehavior.Restrict);
     }
 }
