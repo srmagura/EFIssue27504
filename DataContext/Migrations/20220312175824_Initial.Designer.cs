@@ -12,14 +12,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataContext.Migrations
 {
     [DbContext(typeof(AppDataContext))]
-    [Migration("20211224161907_AddDesignerData")]
-    partial class AddDesignerData
+    [Migration("20220312175824_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.0")
+                .HasAnnotation("ProductVersion", "6.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -70,6 +70,9 @@ namespace DataContext.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("ComponentTypeId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTimeOffset>("DateCreatedUtc")
                         .HasColumnType("datetimeoffset");
 
@@ -85,23 +88,28 @@ namespace DataContext.Migrations
                     b.Property<Guid>("OrganizationId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("VisibleToCustomer")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ComponentTypeId");
 
                     b.HasIndex("OrganizationId");
 
                     b.ToTable("Components");
                 });
 
-            modelBuilder.Entity("DbEntities.DbComponentVersion", b =>
+            modelBuilder.Entity("DbEntities.DbComponentType", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ComponentId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTimeOffset>("DateCreatedUtc")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -111,10 +119,71 @@ namespace DataContext.Migrations
                     b.Property<Guid>("OrganizationId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrganizationId", "Name")
+                        .IsUnique();
+
+                    b.ToTable("ComponentTypes");
+                });
+
+            modelBuilder.Entity("DbEntities.DbComponentVersion", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Color")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<Guid>("ComponentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("DateCreatedUtc")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("InternalNotes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Make")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<Guid>("OrganizationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("OrganizationPartNumber")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("Style")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("VendorPartNumber")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
                     b.Property<string>("VersionName")
                         .IsRequired()
                         .HasMaxLength(16)
                         .HasColumnType("nvarchar(16)");
+
+                    b.Property<string>("WhereToBuy")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.HasKey("Id");
 
@@ -124,6 +193,29 @@ namespace DataContext.Migrations
                         .IsUnique();
 
                     b.ToTable("ComponentVersions");
+                });
+
+            modelBuilder.Entity("DbEntities.DbDefaultProjectDescription", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("DateCreatedUtc")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid>("OrganizationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrganizationId")
+                        .IsUnique();
+
+                    b.ToTable("DefaultProjectDescriptions");
                 });
 
             modelBuilder.Entity("DbEntities.DbDesignerData", b =>
@@ -138,6 +230,9 @@ namespace DataContext.Migrations
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
+                    b.Property<int>("JsonSchemaVersion")
+                        .HasColumnType("int");
+
                     b.Property<Guid>("OrganizationId")
                         .HasColumnType("uniqueidentifier");
 
@@ -151,7 +246,8 @@ namespace DataContext.Migrations
 
                     b.HasIndex("OrganizationId");
 
-                    b.HasIndex("PageId");
+                    b.HasIndex("PageId", "Type")
+                        .IsUnique();
 
                     b.ToTable("DesignerData");
                 });
@@ -193,6 +289,56 @@ namespace DataContext.Migrations
                     b.HasIndex("ProjectId");
 
                     b.ToTable("Imports");
+                });
+
+            modelBuilder.Entity("DbEntities.DbLogoSet", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("DateCreatedUtc")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<Guid>("OrganizationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrganizationId", "Name")
+                        .IsUnique();
+
+                    b.ToTable("LogoSets");
+                });
+
+            modelBuilder.Entity("DbEntities.DbNotForConstructionDisclaimer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("DateCreatedUtc")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid>("OrganizationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrganizationId")
+                        .IsUnique();
+
+                    b.ToTable("NotForConstructionDisclaimers");
                 });
 
             modelBuilder.Entity("DbEntities.DbOrganization", b =>
@@ -242,13 +388,53 @@ namespace DataContext.Migrations
                     b.Property<Guid>("ProjectId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("SheetNameSuffix")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<string>("SheetNumberSuffix")
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
+
+                    b.Property<Guid?>("SheetTypeId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("OrganizationId");
 
                     b.HasIndex("ProjectId");
 
+                    b.HasIndex("SheetTypeId");
+
                     b.ToTable("Pages");
+                });
+
+            modelBuilder.Entity("DbEntities.DbProductFamily", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("DateCreatedUtc")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<Guid>("OrganizationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrganizationId", "Name")
+                        .IsUnique();
+
+                    b.ToTable("ProductFamilies");
                 });
 
             modelBuilder.Entity("DbEntities.DbProductKit", b =>
@@ -265,7 +451,13 @@ namespace DataContext.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<int>("MeasurementType")
+                        .HasColumnType("int");
+
                     b.Property<Guid>("OrganizationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ProductFamilyId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -273,6 +465,8 @@ namespace DataContext.Migrations
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("OrganizationId");
+
+                    b.HasIndex("ProductFamilyId");
 
                     b.ToTable("ProductKits");
                 });
@@ -306,6 +500,38 @@ namespace DataContext.Migrations
                     b.HasIndex("ProductKitVersionId");
 
                     b.ToTable("ProductKitComponentMaps");
+                });
+
+            modelBuilder.Entity("DbEntities.DbProductKitReference", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("DateCreatedUtc")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid>("OrganizationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductKitVersionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Tag")
+                        .HasMaxLength(4)
+                        .HasColumnType("nvarchar(4)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrganizationId");
+
+                    b.HasIndex("ProductKitVersionId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("ProductKitReferences");
                 });
 
             modelBuilder.Entity("DbEntities.DbProductKitVersion", b =>
@@ -388,6 +614,36 @@ namespace DataContext.Migrations
                     b.ToTable("ProductPhotos");
                 });
 
+            modelBuilder.Entity("DbEntities.DbProductRequirement", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("DateCreatedUtc")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("Index")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Label")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<Guid>("OrganizationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("SvgText")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrganizationId");
+
+                    b.ToTable("ProductRequirements");
+                });
+
             modelBuilder.Entity("DbEntities.DbProject", b =>
                 {
                     b.Property<Guid>("Id")
@@ -404,6 +660,12 @@ namespace DataContext.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("DesignerLockedById")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("DesignerLockedUtc")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<int>("EstimatedSquareFeet")
                         .HasColumnType("int");
@@ -426,10 +688,124 @@ namespace DataContext.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DesignerLockedById");
+
                     b.HasIndex("OrganizationId", "Name")
                         .IsUnique();
 
                     b.ToTable("Projects");
+                });
+
+            modelBuilder.Entity("DbEntities.DbProjectPublication", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("DateCreatedUtc")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid>("OrganizationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PublishedById")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("ReportsSentToCustomer")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("RevisionNumber")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrganizationId");
+
+                    b.HasIndex("PublishedById");
+
+                    b.HasIndex("ProjectId", "RevisionNumber")
+                        .IsUnique();
+
+                    b.ToTable("ProjectPublications");
+                });
+
+            modelBuilder.Entity("DbEntities.DbReport", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("DateCreatedUtc")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("ErrorMessage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Filename")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("OrganizationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("ProcessingEndUtc")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset?>("ProcessingStartUtc")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ProjectPublicationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrganizationId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("ProjectPublicationId");
+
+                    b.ToTable("Reports");
+                });
+
+            modelBuilder.Entity("DbEntities.DbSheetType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("DateCreatedUtc")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("OrganizationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("SheetNamePrefix")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("SheetNumberPrefix")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrganizationId");
+
+                    b.ToTable("SheetTypes");
                 });
 
             modelBuilder.Entity("DbEntities.DbSymbol", b =>
@@ -463,6 +839,31 @@ namespace DataContext.Migrations
                     b.ToTable("Symbols");
                 });
 
+            modelBuilder.Entity("DbEntities.DbTermsDocument", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("DateCreatedUtc")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Number")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("OrganizationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrganizationId", "Number")
+                        .IsUnique();
+
+                    b.ToTable("TermsDocuments");
+                });
+
             modelBuilder.Entity("DbEntities.DbUser", b =>
                 {
                     b.Property<Guid>("Id")
@@ -485,50 +886,6 @@ namespace DataContext.Migrations
                     b.HasIndex("OrganizationId");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("ITI.DDD.Logging.LogEntry", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<string>("Exception")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Hostname")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<string>("Level")
-                        .HasMaxLength(16)
-                        .HasColumnType("nvarchar(16)");
-
-                    b.Property<string>("Message")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Process")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<string>("UserId")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTimeOffset>("WhenUtc")
-                        .HasColumnType("datetimeoffset");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("WhenUtc");
-
-                    b.ToTable("LogEntries");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.DataProtection.EntityFrameworkCore.DataProtectionKey", b =>
@@ -569,6 +926,25 @@ namespace DataContext.Migrations
 
             modelBuilder.Entity("DbEntities.DbComponent", b =>
                 {
+                    b.HasOne("DbEntities.DbComponentType", "ComponentType")
+                        .WithMany()
+                        .HasForeignKey("ComponentTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DbEntities.DbOrganization", "Organization")
+                        .WithMany()
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ComponentType");
+
+                    b.Navigation("Organization");
+                });
+
+            modelBuilder.Entity("DbEntities.DbComponentType", b =>
+                {
                     b.HasOne("DbEntities.DbOrganization", "Organization")
                         .WithMany()
                         .HasForeignKey("OrganizationId")
@@ -592,17 +968,13 @@ namespace DataContext.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("ValueObjects.Url", "Url", b1 =>
+                    b.OwnsOne("ValueObjects.Money", "SellPrice", b1 =>
                         {
                             b1.Property<Guid>("DbComponentVersionId")
                                 .HasColumnType("uniqueidentifier");
 
-                            b1.Property<bool?>("HasValue")
-                                .HasColumnType("bit");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
+                            b1.Property<decimal>("Value")
+                                .HasColumnType("decimal(18,2)");
 
                             b1.HasKey("DbComponentVersionId");
 
@@ -612,16 +984,14 @@ namespace DataContext.Migrations
                                 .HasForeignKey("DbComponentVersionId");
                         });
 
-                    b.OwnsOne("ValueObjects.Money", "SellPrice", b1 =>
+                    b.OwnsOne("ValueObjects.Url", "Url", b1 =>
                         {
                             b1.Property<Guid>("DbComponentVersionId")
                                 .HasColumnType("uniqueidentifier");
 
-                            b1.Property<bool?>("HasValue")
-                                .HasColumnType("bit");
-
-                            b1.Property<decimal>("Value")
-                                .HasColumnType("decimal(18,2)");
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
 
                             b1.HasKey("DbComponentVersionId");
 
@@ -639,6 +1009,17 @@ namespace DataContext.Migrations
                         .IsRequired();
 
                     b.Navigation("Url");
+                });
+
+            modelBuilder.Entity("DbEntities.DbDefaultProjectDescription", b =>
+                {
+                    b.HasOne("DbEntities.DbOrganization", "Organization")
+                        .WithMany()
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Organization");
                 });
 
             modelBuilder.Entity("DbEntities.DbDesignerData", b =>
@@ -687,9 +1068,6 @@ namespace DataContext.Migrations
                                 .HasMaxLength(32)
                                 .HasColumnType("nvarchar(32)");
 
-                            b1.Property<bool?>("HasValue")
-                                .HasColumnType("bit");
-
                             b1.HasKey("DbImportId");
 
                             b1.ToTable("Imports");
@@ -702,9 +1080,6 @@ namespace DataContext.Migrations
                         {
                             b1.Property<Guid>("DbImportId")
                                 .HasColumnType("uniqueidentifier");
-
-                            b1.Property<bool?>("HasValue")
-                                .HasColumnType("bit");
 
                             b1.Property<decimal>("Value")
                                 .HasColumnType("decimal(18,4)");
@@ -728,15 +1103,82 @@ namespace DataContext.Migrations
                     b.Navigation("Project");
                 });
 
+            modelBuilder.Entity("DbEntities.DbLogoSet", b =>
+                {
+                    b.HasOne("DbEntities.DbOrganization", "Organization")
+                        .WithMany()
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsOne("DbEntities.ValueObjects.DbFileRef", "DarkLogo", b1 =>
+                        {
+                            b1.Property<Guid>("DbLogoSetId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<Guid>("FileId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("FileType")
+                                .IsRequired()
+                                .HasMaxLength(32)
+                                .HasColumnType("nvarchar(32)");
+
+                            b1.HasKey("DbLogoSetId");
+
+                            b1.ToTable("LogoSets");
+
+                            b1.WithOwner()
+                                .HasForeignKey("DbLogoSetId");
+                        });
+
+                    b.OwnsOne("DbEntities.ValueObjects.DbFileRef", "LightLogo", b1 =>
+                        {
+                            b1.Property<Guid>("DbLogoSetId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<Guid>("FileId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("FileType")
+                                .IsRequired()
+                                .HasMaxLength(32)
+                                .HasColumnType("nvarchar(32)");
+
+                            b1.HasKey("DbLogoSetId");
+
+                            b1.ToTable("LogoSets");
+
+                            b1.WithOwner()
+                                .HasForeignKey("DbLogoSetId");
+                        });
+
+                    b.Navigation("DarkLogo")
+                        .IsRequired();
+
+                    b.Navigation("LightLogo")
+                        .IsRequired();
+
+                    b.Navigation("Organization");
+                });
+
+            modelBuilder.Entity("DbEntities.DbNotForConstructionDisclaimer", b =>
+                {
+                    b.HasOne("DbEntities.DbOrganization", "Organization")
+                        .WithMany()
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Organization");
+                });
+
             modelBuilder.Entity("DbEntities.DbOrganization", b =>
                 {
                     b.OwnsOne("ValueObjects.OrganizationShortName", "ShortName", b1 =>
                         {
                             b1.Property<Guid>("DbOrganizationId")
                                 .HasColumnType("uniqueidentifier");
-
-                            b1.Property<bool?>("HasValue")
-                                .HasColumnType("bit");
 
                             b1.Property<string>("Value")
                                 .IsRequired()
@@ -772,6 +1214,10 @@ namespace DataContext.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("DbEntities.DbSheetType", "SheetType")
+                        .WithMany()
+                        .HasForeignKey("SheetTypeId");
+
                     b.OwnsOne("DbEntities.ValueObjects.DbFileRef", "Pdf", b1 =>
                         {
                             b1.Property<Guid>("DbPageId")
@@ -784,9 +1230,6 @@ namespace DataContext.Migrations
                                 .IsRequired()
                                 .HasMaxLength(32)
                                 .HasColumnType("nvarchar(32)");
-
-                            b1.Property<bool?>("HasValue")
-                                .HasColumnType("bit");
 
                             b1.HasKey("DbPageId");
 
@@ -809,9 +1252,6 @@ namespace DataContext.Migrations
                                 .HasMaxLength(32)
                                 .HasColumnType("nvarchar(32)");
 
-                            b1.Property<bool?>("HasValue")
-                                .HasColumnType("bit");
-
                             b1.HasKey("DbPageId");
 
                             b1.ToTable("Pages");
@@ -827,8 +1267,21 @@ namespace DataContext.Migrations
 
                     b.Navigation("Project");
 
+                    b.Navigation("SheetType");
+
                     b.Navigation("Thumbnail")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("DbEntities.DbProductFamily", b =>
+                {
+                    b.HasOne("DbEntities.DbOrganization", "Organization")
+                        .WithMany()
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Organization");
                 });
 
             modelBuilder.Entity("DbEntities.DbProductKit", b =>
@@ -845,9 +1298,15 @@ namespace DataContext.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("DbEntities.DbProductFamily", "ProductFamily")
+                        .WithMany("ProductKits")
+                        .HasForeignKey("ProductFamilyId");
+
                     b.Navigation("Category");
 
                     b.Navigation("Organization");
+
+                    b.Navigation("ProductFamily");
                 });
 
             modelBuilder.Entity("DbEntities.DbProductKitComponentMap", b =>
@@ -875,6 +1334,33 @@ namespace DataContext.Migrations
                     b.Navigation("Organization");
 
                     b.Navigation("ProductKitVersion");
+                });
+
+            modelBuilder.Entity("DbEntities.DbProductKitReference", b =>
+                {
+                    b.HasOne("DbEntities.DbOrganization", "Organization")
+                        .WithMany()
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DbEntities.DbProductKitVersion", "ProductKitVersion")
+                        .WithMany("References")
+                        .HasForeignKey("ProductKitVersionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DbEntities.DbProject", "Project")
+                        .WithMany("ProductKitReferences")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Organization");
+
+                    b.Navigation("ProductKitVersion");
+
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("DbEntities.DbProductKitVersion", b =>
@@ -907,6 +1393,22 @@ namespace DataContext.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.OwnsOne("ValueObjects.Money", "SellPrice", b1 =>
+                        {
+                            b1.Property<Guid>("DbProductKitVersionId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<decimal>("Value")
+                                .HasColumnType("decimal(18,2)");
+
+                            b1.HasKey("DbProductKitVersionId");
+
+                            b1.ToTable("ProductKitVersions");
+
+                            b1.WithOwner()
+                                .HasForeignKey("DbProductKitVersionId");
+                        });
+
                     b.Navigation("MainComponentVersion");
 
                     b.Navigation("Organization");
@@ -914,6 +1416,9 @@ namespace DataContext.Migrations
                     b.Navigation("ProductKit");
 
                     b.Navigation("ProductPhoto");
+
+                    b.Navigation("SellPrice")
+                        .IsRequired();
 
                     b.Navigation("Symbol");
                 });
@@ -939,9 +1444,6 @@ namespace DataContext.Migrations
                                 .HasMaxLength(32)
                                 .HasColumnType("nvarchar(32)");
 
-                            b1.Property<bool?>("HasValue")
-                                .HasColumnType("bit");
-
                             b1.HasKey("DbProductPhotoId");
 
                             b1.ToTable("ProductPhotos");
@@ -956,8 +1458,23 @@ namespace DataContext.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("DbEntities.DbProductRequirement", b =>
+                {
+                    b.HasOne("DbEntities.DbOrganization", "Organization")
+                        .WithMany()
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Organization");
+                });
+
             modelBuilder.Entity("DbEntities.DbProject", b =>
                 {
+                    b.HasOne("DbEntities.DbUser", "DesignerLockedBy")
+                        .WithMany()
+                        .HasForeignKey("DesignerLockedById");
+
                     b.HasOne("DbEntities.DbOrganization", "Organization")
                         .WithMany()
                         .HasForeignKey("OrganizationId")
@@ -977,15 +1494,150 @@ namespace DataContext.Migrations
                                 .HasMaxLength(32)
                                 .HasColumnType("nvarchar(32)");
 
-                            b1.Property<bool?>("HasValue")
-                                .HasColumnType("bit");
-
                             b1.HasKey("DbProjectId");
 
                             b1.ToTable("Projects");
 
                             b1.WithOwner()
                                 .HasForeignKey("DbProjectId");
+                        });
+
+                    b.OwnsOne("DbEntities.ValueObjects.DbProjectReportOptions", "ReportOptions", b1 =>
+                        {
+                            b1.Property<Guid>("DbProjectId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<int>("CompassAngle")
+                                .HasColumnType("int");
+
+                            b1.Property<bool>("IncludeCompassInFooter")
+                                .HasColumnType("bit");
+
+                            b1.Property<Guid>("LogoSetId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("PreparerName")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("SigneeName")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<Guid>("TermsDocumentId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<int>("TitleBlockSheetNameFontSize")
+                                .HasColumnType("int");
+
+                            b1.HasKey("DbProjectId");
+
+                            b1.HasIndex("LogoSetId");
+
+                            b1.HasIndex("TermsDocumentId");
+
+                            b1.ToTable("Projects");
+
+                            b1.WithOwner()
+                                .HasForeignKey("DbProjectId");
+
+                            b1.HasOne("DbEntities.DbLogoSet", "LogoSet")
+                                .WithMany()
+                                .HasForeignKey("LogoSetId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
+
+                            b1.HasOne("DbEntities.DbTermsDocument", "TermsDocument")
+                                .WithMany()
+                                .HasForeignKey("TermsDocumentId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
+
+                            b1.OwnsOne("ValueObjects.CompanyContactInfo", "CompanyContactInfo", b2 =>
+                                {
+                                    b2.Property<Guid>("DbProjectReportOptionsDbProjectId")
+                                        .HasColumnType("uniqueidentifier");
+
+                                    b2.Property<string>("Name")
+                                        .IsRequired()
+                                        .HasMaxLength(128)
+                                        .HasColumnType("nvarchar(128)");
+
+                                    b2.HasKey("DbProjectReportOptionsDbProjectId");
+
+                                    b2.ToTable("Projects");
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("DbProjectReportOptionsDbProjectId");
+
+                                    b2.OwnsOne("ValueObjects.EmailAddress", "Email", b3 =>
+                                        {
+                                            b3.Property<Guid>("CompanyContactInfoDbProjectReportOptionsDbProjectId")
+                                                .HasColumnType("uniqueidentifier");
+
+                                            b3.Property<string>("Value")
+                                                .IsRequired()
+                                                .HasMaxLength(128)
+                                                .HasColumnType("nvarchar(128)");
+
+                                            b3.HasKey("CompanyContactInfoDbProjectReportOptionsDbProjectId");
+
+                                            b3.ToTable("Projects");
+
+                                            b3.WithOwner()
+                                                .HasForeignKey("CompanyContactInfoDbProjectReportOptionsDbProjectId");
+                                        });
+
+                                    b2.OwnsOne("ValueObjects.Url", "Url", b3 =>
+                                        {
+                                            b3.Property<Guid>("CompanyContactInfoDbProjectReportOptionsDbProjectId")
+                                                .HasColumnType("uniqueidentifier");
+
+                                            b3.Property<string>("Value")
+                                                .IsRequired()
+                                                .HasColumnType("nvarchar(max)");
+
+                                            b3.HasKey("CompanyContactInfoDbProjectReportOptionsDbProjectId");
+
+                                            b3.ToTable("Projects");
+
+                                            b3.WithOwner()
+                                                .HasForeignKey("CompanyContactInfoDbProjectReportOptionsDbProjectId");
+                                        });
+
+                                    b2.OwnsOne("ValueObjects.PhoneNumber", "Phone", b3 =>
+                                        {
+                                            b3.Property<Guid>("CompanyContactInfoDbProjectReportOptionsDbProjectId")
+                                                .HasColumnType("uniqueidentifier");
+
+                                            b3.Property<string>("Value")
+                                                .IsRequired()
+                                                .HasMaxLength(16)
+                                                .HasColumnType("nvarchar(16)");
+
+                                            b3.HasKey("CompanyContactInfoDbProjectReportOptionsDbProjectId");
+
+                                            b3.ToTable("Projects");
+
+                                            b3.WithOwner()
+                                                .HasForeignKey("CompanyContactInfoDbProjectReportOptionsDbProjectId");
+                                        });
+
+                                    b2.Navigation("Email")
+                                        .IsRequired();
+
+                                    b2.Navigation("Phone")
+                                        .IsRequired();
+
+                                    b2.Navigation("Url")
+                                        .IsRequired();
+                                });
+
+                            b1.Navigation("CompanyContactInfo");
+
+                            b1.Navigation("LogoSet");
+
+                            b1.Navigation("TermsDocument");
                         });
 
                     b.OwnsOne("ValueObjects.PartialAddress", "Address", b1 =>
@@ -1024,9 +1676,6 @@ namespace DataContext.Migrations
                                     b2.Property<Guid>("PartialAddressDbProjectId")
                                         .HasColumnType("uniqueidentifier");
 
-                                    b2.Property<bool?>("HasValue")
-                                        .HasColumnType("bit");
-
                                     b2.Property<string>("Value")
                                         .IsRequired()
                                         .HasMaxLength(16)
@@ -1048,9 +1697,6 @@ namespace DataContext.Migrations
                             b1.Property<Guid>("DbProjectId")
                                 .HasColumnType("uniqueidentifier");
 
-                            b1.Property<bool?>("HasValue")
-                                .HasColumnType("bit");
-
                             b1.Property<bool>("ShowPricePerSquareFoot")
                                 .HasColumnType("bit");
 
@@ -1069,9 +1715,6 @@ namespace DataContext.Migrations
                                     b2.Property<Guid>("ProjectBudgetOptionsDbProjectId")
                                         .HasColumnType("uniqueidentifier");
 
-                                    b2.Property<bool?>("HasValue")
-                                        .HasColumnType("bit");
-
                                     b2.Property<decimal>("Value")
                                         .HasColumnType("decimal(18,4)");
 
@@ -1087,9 +1730,6 @@ namespace DataContext.Migrations
                                 {
                                     b2.Property<Guid>("ProjectBudgetOptionsDbProjectId")
                                         .HasColumnType("uniqueidentifier");
-
-                                    b2.Property<bool?>("HasValue")
-                                        .HasColumnType("bit");
 
                                     b2.Property<decimal>("Value")
                                         .HasColumnType("decimal(18,4)");
@@ -1109,138 +1749,13 @@ namespace DataContext.Migrations
                                 .IsRequired();
                         });
 
-                    b.OwnsOne("ValueObjects.ProjectReportOptions", "ReportOptions", b1 =>
-                        {
-                            b1.Property<Guid>("DbProjectId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<int>("CompassAngle")
-                                .HasColumnType("int");
-
-                            b1.Property<bool?>("HasValue")
-                                .HasColumnType("bit");
-
-                            b1.Property<bool>("IncludeCompassInFooter")
-                                .HasColumnType("bit");
-
-                            b1.Property<string>("PreparerName")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<string>("SigneeName")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<int>("TitleBlockSheetNameFontSize")
-                                .HasColumnType("int");
-
-                            b1.HasKey("DbProjectId");
-
-                            b1.ToTable("Projects");
-
-                            b1.WithOwner()
-                                .HasForeignKey("DbProjectId");
-
-                            b1.OwnsOne("ValueObjects.CompanyContactInfo", "CompanyContactInfo", b2 =>
-                                {
-                                    b2.Property<Guid>("ProjectReportOptionsDbProjectId")
-                                        .HasColumnType("uniqueidentifier");
-
-                                    b2.Property<bool?>("HasValue")
-                                        .HasColumnType("bit");
-
-                                    b2.Property<string>("Name")
-                                        .IsRequired()
-                                        .HasMaxLength(128)
-                                        .HasColumnType("nvarchar(128)");
-
-                                    b2.HasKey("ProjectReportOptionsDbProjectId");
-
-                                    b2.ToTable("Projects");
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("ProjectReportOptionsDbProjectId");
-
-                                    b2.OwnsOne("ITI.Baseline.ValueObjects.PhoneNumber", "Phone", b3 =>
-                                        {
-                                            b3.Property<Guid>("CompanyContactInfoProjectReportOptionsDbProjectId")
-                                                .HasColumnType("uniqueidentifier");
-
-                                            b3.Property<bool?>("HasValue")
-                                                .HasColumnType("bit");
-
-                                            b3.Property<string>("Value")
-                                                .IsRequired()
-                                                .HasMaxLength(16)
-                                                .HasColumnType("nvarchar(16)");
-
-                                            b3.HasKey("CompanyContactInfoProjectReportOptionsDbProjectId");
-
-                                            b3.ToTable("Projects");
-
-                                            b3.WithOwner()
-                                                .HasForeignKey("CompanyContactInfoProjectReportOptionsDbProjectId");
-                                        });
-
-                                    b2.OwnsOne("ITI.Baseline.ValueObjects.EmailAddress", "Email", b3 =>
-                                        {
-                                            b3.Property<Guid>("CompanyContactInfoProjectReportOptionsDbProjectId")
-                                                .HasColumnType("uniqueidentifier");
-
-                                            b3.Property<bool?>("HasValue")
-                                                .HasColumnType("bit");
-
-                                            b3.Property<string>("Value")
-                                                .IsRequired()
-                                                .HasMaxLength(256)
-                                                .HasColumnType("nvarchar(256)");
-
-                                            b3.HasKey("CompanyContactInfoProjectReportOptionsDbProjectId");
-
-                                            b3.ToTable("Projects");
-
-                                            b3.WithOwner()
-                                                .HasForeignKey("CompanyContactInfoProjectReportOptionsDbProjectId");
-                                        });
-
-                                    b2.OwnsOne("ValueObjects.Url", "Url", b3 =>
-                                        {
-                                            b3.Property<Guid>("CompanyContactInfoProjectReportOptionsDbProjectId")
-                                                .HasColumnType("uniqueidentifier");
-
-                                            b3.Property<bool?>("HasValue")
-                                                .HasColumnType("bit");
-
-                                            b3.Property<string>("Value")
-                                                .IsRequired()
-                                                .HasColumnType("nvarchar(max)");
-
-                                            b3.HasKey("CompanyContactInfoProjectReportOptionsDbProjectId");
-
-                                            b3.ToTable("Projects");
-
-                                            b3.WithOwner()
-                                                .HasForeignKey("CompanyContactInfoProjectReportOptionsDbProjectId");
-                                        });
-
-                                    b2.Navigation("Email")
-                                        .IsRequired();
-
-                                    b2.Navigation("Phone")
-                                        .IsRequired();
-
-                                    b2.Navigation("Url")
-                                        .IsRequired();
-                                });
-
-                            b1.Navigation("CompanyContactInfo");
-                        });
-
                     b.Navigation("Address")
                         .IsRequired();
 
                     b.Navigation("BudgetOptions")
                         .IsRequired();
+
+                    b.Navigation("DesignerLockedBy");
 
                     b.Navigation("Organization");
 
@@ -1248,6 +1763,111 @@ namespace DataContext.Migrations
 
                     b.Navigation("ReportOptions")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("DbEntities.DbProjectPublication", b =>
+                {
+                    b.HasOne("DbEntities.DbOrganization", "Organization")
+                        .WithMany()
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DbEntities.DbProject", "Project")
+                        .WithMany("ProjectPublications")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DbEntities.DbUser", "PublishedBy")
+                        .WithMany()
+                        .HasForeignKey("PublishedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Organization");
+
+                    b.Navigation("Project");
+
+                    b.Navigation("PublishedBy");
+                });
+
+            modelBuilder.Entity("DbEntities.DbReport", b =>
+                {
+                    b.HasOne("DbEntities.DbOrganization", "Organization")
+                        .WithMany()
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DbEntities.DbProject", "Project")
+                        .WithMany("Reports")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DbEntities.DbProjectPublication", "ProjectPublication")
+                        .WithMany("Reports")
+                        .HasForeignKey("ProjectPublicationId");
+
+                    b.OwnsOne("DbEntities.ValueObjects.DbFileRef", "File", b1 =>
+                        {
+                            b1.Property<Guid>("DbReportId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<Guid>("FileId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("FileType")
+                                .IsRequired()
+                                .HasMaxLength(32)
+                                .HasColumnType("nvarchar(32)");
+
+                            b1.HasKey("DbReportId");
+
+                            b1.ToTable("Reports");
+
+                            b1.WithOwner()
+                                .HasForeignKey("DbReportId");
+                        });
+
+                    b.OwnsOne("ValueObjects.Percentage", "PercentComplete", b1 =>
+                        {
+                            b1.Property<Guid>("DbReportId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<decimal>("Value")
+                                .HasColumnType("decimal(18,4)");
+
+                            b1.HasKey("DbReportId");
+
+                            b1.ToTable("Reports");
+
+                            b1.WithOwner()
+                                .HasForeignKey("DbReportId");
+                        });
+
+                    b.Navigation("File");
+
+                    b.Navigation("Organization");
+
+                    b.Navigation("PercentComplete")
+                        .IsRequired();
+
+                    b.Navigation("Project");
+
+                    b.Navigation("ProjectPublication");
+                });
+
+            modelBuilder.Entity("DbEntities.DbSheetType", b =>
+                {
+                    b.HasOne("DbEntities.DbOrganization", "Organization")
+                        .WithMany()
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Organization");
                 });
 
             modelBuilder.Entity("DbEntities.DbSymbol", b =>
@@ -1261,6 +1881,41 @@ namespace DataContext.Migrations
                     b.Navigation("Organization");
                 });
 
+            modelBuilder.Entity("DbEntities.DbTermsDocument", b =>
+                {
+                    b.HasOne("DbEntities.DbOrganization", "Organization")
+                        .WithMany()
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsOne("DbEntities.ValueObjects.DbFileRef", "File", b1 =>
+                        {
+                            b1.Property<Guid>("DbTermsDocumentId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<Guid>("FileId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("FileType")
+                                .IsRequired()
+                                .HasMaxLength(32)
+                                .HasColumnType("nvarchar(32)");
+
+                            b1.HasKey("DbTermsDocumentId");
+
+                            b1.ToTable("TermsDocuments");
+
+                            b1.WithOwner()
+                                .HasForeignKey("DbTermsDocumentId");
+                        });
+
+                    b.Navigation("File")
+                        .IsRequired();
+
+                    b.Navigation("Organization");
+                });
+
             modelBuilder.Entity("DbEntities.DbUser", b =>
                 {
                     b.HasOne("DbEntities.DbOrganization", "Organization")
@@ -1269,37 +1924,10 @@ namespace DataContext.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.OwnsOne("ITI.Baseline.ValueObjects.EmailAddress", "Email", b1 =>
+                    b.OwnsOne("ValueObjects.EmailAddress", "Email", b1 =>
                         {
                             b1.Property<Guid>("DbUserId")
                                 .HasColumnType("uniqueidentifier");
-
-                            b1.Property<bool?>("HasValue")
-                                .HasColumnType("bit");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasMaxLength(256)
-                                .HasColumnType("nvarchar(256)");
-
-                            b1.HasKey("DbUserId");
-
-                            b1.HasIndex("Value")
-                                .IsUnique();
-
-                            b1.ToTable("Users");
-
-                            b1.WithOwner()
-                                .HasForeignKey("DbUserId");
-                        });
-
-                    b.OwnsOne("ITI.Baseline.Passwords.EncodedPassword", "EncodedPassword", b1 =>
-                        {
-                            b1.Property<Guid>("DbUserId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<bool?>("HasValue")
-                                .HasColumnType("bit");
 
                             b1.Property<string>("Value")
                                 .IsRequired()
@@ -1307,6 +1935,9 @@ namespace DataContext.Migrations
                                 .HasColumnType("nvarchar(128)");
 
                             b1.HasKey("DbUserId");
+
+                            b1.HasIndex("Value")
+                                .IsUnique();
 
                             b1.ToTable("Users");
 
@@ -1324,9 +1955,6 @@ namespace DataContext.Migrations
                                 .HasMaxLength(64)
                                 .HasColumnType("nvarchar(64)");
 
-                            b1.Property<bool?>("HasValue")
-                                .HasColumnType("bit");
-
                             b1.Property<string>("Last")
                                 .IsRequired()
                                 .HasMaxLength(64)
@@ -1342,8 +1970,6 @@ namespace DataContext.Migrations
 
                     b.Navigation("Email")
                         .IsRequired();
-
-                    b.Navigation("EncodedPassword");
 
                     b.Navigation("Name")
                         .IsRequired();
@@ -1366,6 +1992,11 @@ namespace DataContext.Migrations
                     b.Navigation("DesignerData");
                 });
 
+            modelBuilder.Entity("DbEntities.DbProductFamily", b =>
+                {
+                    b.Navigation("ProductKits");
+                });
+
             modelBuilder.Entity("DbEntities.DbProductKit", b =>
                 {
                     b.Navigation("Versions");
@@ -1374,11 +2005,24 @@ namespace DataContext.Migrations
             modelBuilder.Entity("DbEntities.DbProductKitVersion", b =>
                 {
                     b.Navigation("ComponentMaps");
+
+                    b.Navigation("References");
                 });
 
             modelBuilder.Entity("DbEntities.DbProject", b =>
                 {
                     b.Navigation("Imports");
+
+                    b.Navigation("ProductKitReferences");
+
+                    b.Navigation("ProjectPublications");
+
+                    b.Navigation("Reports");
+                });
+
+            modelBuilder.Entity("DbEntities.DbProjectPublication", b =>
+                {
+                    b.Navigation("Reports");
                 });
 #pragma warning restore 612, 618
         }

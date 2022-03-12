@@ -3,11 +3,11 @@ using ValueObjects;
 
 namespace DbEntities;
 
-public class DbPageImport : DbEntity
+public class DbImport : DbEntity
 {
 #nullable disable
     [Obsolete("For use by Entity Framework only.")]
-    protected DbPageImport() { }
+    protected DbImport() { }
 #nullable enable
 
     public Guid OrganizationId { get; protected set; }

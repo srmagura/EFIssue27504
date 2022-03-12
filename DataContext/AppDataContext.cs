@@ -28,7 +28,7 @@ namespace DataContext
 
             DbCategory.OnModelCreating(modelBuilder);
 
-            DbPageImport.OnModelCreating(modelBuilder);
+            DbImport.OnModelCreating(modelBuilder);
 
             DbProjectPublication.OnModelCreating(modelBuilder);
 
@@ -73,7 +73,7 @@ namespace DataContext
         public DbSet<DbUser> Users => Set<DbUser>();
 
         public DbSet<DbProject> Projects => Set<DbProject>();
-        public DbSet<DbPageImport> PageImports => Set<DbPageImport>();
+        public DbSet<DbImport> Imports => Set<DbImport>();
         public DbSet<DbProjectPublication> ProjectPublications => Set<DbProjectPublication>();
         public DbSet<DbReport> Reports => Set<DbReport>();
         public DbSet<DbPage> Pages => Set<DbPage>();

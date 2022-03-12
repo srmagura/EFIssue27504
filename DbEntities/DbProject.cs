@@ -59,7 +59,7 @@ public class DbProject : DbEntity
 
     public DateTimeOffset? DesignerLockedUtc { get; set; }
 
-    public List<DbPageImport> Imports { get; set; } = new();
+    public List<DbImport> Imports { get; set; } = new();
     public List<DbProjectPublication> ProjectPublications { get; set; } = new();
     public List<DbReport> Reports { get; set; } = new();
     public List<DbProductKitReference> ProductKitReferences { get; set; } = new();

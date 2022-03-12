@@ -17,7 +17,7 @@ namespace DataContext.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.2")
+                .HasAnnotation("ProductVersion", "6.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -886,50 +886,6 @@ namespace DataContext.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("ITI.DDD.Logging.LogEntry", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<string>("Exception")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Hostname")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<string>("Level")
-                        .HasMaxLength(16)
-                        .HasColumnType("nvarchar(16)");
-
-                    b.Property<string>("Message")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Process")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<string>("UserId")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTimeOffset>("WhenUtc")
-                        .HasColumnType("datetimeoffset");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("WhenUtc");
-
-                    b.ToTable("LogEntries");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.DataProtection.EntityFrameworkCore.DataProtectionKey", b =>
                 {
                     b.Property<int>("Id")
@@ -1612,33 +1568,15 @@ namespace DataContext.Migrations
                                     b2.WithOwner()
                                         .HasForeignKey("DbProjectReportOptionsDbProjectId");
 
-                                    b2.OwnsOne("ITI.Baseline.ValueObjects.PhoneNumber", "Phone", b3 =>
+                                    b2.OwnsOne("ValueObjects.EmailAddress", "Email", b3 =>
                                         {
                                             b3.Property<Guid>("CompanyContactInfoDbProjectReportOptionsDbProjectId")
                                                 .HasColumnType("uniqueidentifier");
 
                                             b3.Property<string>("Value")
                                                 .IsRequired()
-                                                .HasMaxLength(16)
-                                                .HasColumnType("nvarchar(16)");
-
-                                            b3.HasKey("CompanyContactInfoDbProjectReportOptionsDbProjectId");
-
-                                            b3.ToTable("Projects");
-
-                                            b3.WithOwner()
-                                                .HasForeignKey("CompanyContactInfoDbProjectReportOptionsDbProjectId");
-                                        });
-
-                                    b2.OwnsOne("ITI.Baseline.ValueObjects.EmailAddress", "Email", b3 =>
-                                        {
-                                            b3.Property<Guid>("CompanyContactInfoDbProjectReportOptionsDbProjectId")
-                                                .HasColumnType("uniqueidentifier");
-
-                                            b3.Property<string>("Value")
-                                                .IsRequired()
-                                                .HasMaxLength(256)
-                                                .HasColumnType("nvarchar(256)");
+                                                .HasMaxLength(128)
+                                                .HasColumnType("nvarchar(128)");
 
                                             b3.HasKey("CompanyContactInfoDbProjectReportOptionsDbProjectId");
 
@@ -1656,6 +1594,24 @@ namespace DataContext.Migrations
                                             b3.Property<string>("Value")
                                                 .IsRequired()
                                                 .HasColumnType("nvarchar(max)");
+
+                                            b3.HasKey("CompanyContactInfoDbProjectReportOptionsDbProjectId");
+
+                                            b3.ToTable("Projects");
+
+                                            b3.WithOwner()
+                                                .HasForeignKey("CompanyContactInfoDbProjectReportOptionsDbProjectId");
+                                        });
+
+                                    b2.OwnsOne("ValueObjects.PhoneNumber", "Phone", b3 =>
+                                        {
+                                            b3.Property<Guid>("CompanyContactInfoDbProjectReportOptionsDbProjectId")
+                                                .HasColumnType("uniqueidentifier");
+
+                                            b3.Property<string>("Value")
+                                                .IsRequired()
+                                                .HasMaxLength(16)
+                                                .HasColumnType("nvarchar(16)");
 
                                             b3.HasKey("CompanyContactInfoDbProjectReportOptionsDbProjectId");
 
@@ -1966,28 +1922,7 @@ namespace DataContext.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.OwnsOne("ITI.Baseline.ValueObjects.EmailAddress", "Email", b1 =>
-                        {
-                            b1.Property<Guid>("DbUserId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasMaxLength(256)
-                                .HasColumnType("nvarchar(256)");
-
-                            b1.HasKey("DbUserId");
-
-                            b1.HasIndex("Value")
-                                .IsUnique();
-
-                            b1.ToTable("Users");
-
-                            b1.WithOwner()
-                                .HasForeignKey("DbUserId");
-                        });
-
-                    b.OwnsOne("ITI.Baseline.Passwords.EncodedPassword", "EncodedPassword", b1 =>
+                    b.OwnsOne("ValueObjects.EmailAddress", "Email", b1 =>
                         {
                             b1.Property<Guid>("DbUserId")
                                 .HasColumnType("uniqueidentifier");
@@ -1998,6 +1933,9 @@ namespace DataContext.Migrations
                                 .HasColumnType("nvarchar(128)");
 
                             b1.HasKey("DbUserId");
+
+                            b1.HasIndex("Value")
+                                .IsUnique();
 
                             b1.ToTable("Users");
 
@@ -2030,8 +1968,6 @@ namespace DataContext.Migrations
 
                     b.Navigation("Email")
                         .IsRequired();
-
-                    b.Navigation("EncodedPassword");
 
                     b.Navigation("Name")
                         .IsRequired();
