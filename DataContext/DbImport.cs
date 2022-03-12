@@ -2,9 +2,6 @@ namespace DataContext;
 
 public class DbImport : DbEntity
 {
-    public Guid OrganizationId { get; protected set; }
-    public DbOrganization? Organization { get; protected set; }
-
     public Guid ProjectId { get; protected set; }
     public DbProject? Project { get; protected set; }
 

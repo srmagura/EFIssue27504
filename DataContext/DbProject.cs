@@ -2,9 +2,6 @@ namespace DataContext;
 
 public class DbProject : DbEntity
 {
-    public Guid OrganizationId { get; set; }
-    public DbOrganization? Organization { get; set; }
-
     [MaxLength(128)]
     public string Name { get; set; }
 
@@ -28,10 +25,6 @@ public class DbProject : DbEntity
 
     public static void OnModelCreating(ModelBuilder mb)
     {
-        mb.Entity<DbProject>()
-            .HasIndex(p => new { p.OrganizationId, p.Name })
-            .IsUnique();
-
         mb.Entity<DbProject>()
             .HasMany(p => p.Imports)
             .WithOne(i => i.Project)

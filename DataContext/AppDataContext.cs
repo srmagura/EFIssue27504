@@ -14,12 +14,8 @@ public class AppDataContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        DbOrganization.OnModelCreating(modelBuilder);
-
         DbProject.OnModelCreating(modelBuilder);
     }
-
-    public DbSet<DbOrganization> Organizations => Set<DbOrganization>();
 
     public DbSet<DbProject> Projects => Set<DbProject>();
     public DbSet<DbImport> Imports => Set<DbImport>();
