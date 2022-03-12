@@ -1,4 +1,4 @@
-namespace DbEntities;
+namespace DataContext;
 
 public class DbOrganization : DbEntity
 {

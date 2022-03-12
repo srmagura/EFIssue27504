@@ -21,8 +21,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\DbEntities\DbEntities.csproj" />
-  </ItemGroup>
-
 </Project>

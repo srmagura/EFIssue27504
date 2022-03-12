@@ -1,6 +1,4 @@
-using DbEntities.ValueObjects;
-
-namespace DbEntities;
+namespace DataContext;
 
 public class DbImport : DbEntity
 {

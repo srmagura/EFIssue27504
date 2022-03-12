@@ -1,4 +1,4 @@
-namespace DbEntities.ValueObjects
+namespace DataContext
 {
     [Owned]
     public record DbFileRef

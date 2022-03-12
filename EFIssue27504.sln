@@ -13,8 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Solution Items", "_Solutio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataContext", "DataContext\DataContext.csproj", "{4BB707D7-23BE-4B39-AF09-DD0BC81C926A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbEntities", "DbEntities\DbEntities.csproj", "{BFF45587-004E-4C6A-8543-63C126F67EC9}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,10 +23,6 @@ Global
 		{4BB707D7-23BE-4B39-AF09-DD0BC81C926A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4BB707D7-23BE-4B39-AF09-DD0BC81C926A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4BB707D7-23BE-4B39-AF09-DD0BC81C926A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BFF45587-004E-4C6A-8543-63C126F67EC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BFF45587-004E-4C6A-8543-63C126F67EC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BFF45587-004E-4C6A-8543-63C126F67EC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BFF45587-004E-4C6A-8543-63C126F67EC9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
