@@ -22,12 +22,4 @@ public class DbProject : DbEntity
     public DateTimeOffset? DesignerLockedUtc { get; set; }
 
     public List<DbImport> Imports { get; set; } = new();
-
-    public static void OnModelCreating(ModelBuilder mb)
-    {
-        mb.Entity<DbProject>()
-            .HasMany(p => p.Imports)
-            .WithOne(i => i.Project)
-            .OnDelete(DeleteBehavior.Restrict);
-    }
 }

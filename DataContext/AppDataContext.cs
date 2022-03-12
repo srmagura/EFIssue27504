@@ -12,11 +12,6 @@ public class AppDataContext : DbContext
             .UseSqlServer(connectionString);
     }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        DbProject.OnModelCreating(modelBuilder);
-    }
-
     public DbSet<DbProject> Projects => Set<DbProject>();
     public DbSet<DbImport> Imports => Set<DbImport>();
 }
