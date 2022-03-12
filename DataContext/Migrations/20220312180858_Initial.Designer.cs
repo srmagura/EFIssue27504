@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataContext.Migrations
 {
     [DbContext(typeof(AppDataContext))]
-    [Migration("20220312180732_Initial")]
+    [Migration("20220312180858_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,9 +50,6 @@ namespace DataContext.Migrations
 
                     b.Property<Guid>("ProjectId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

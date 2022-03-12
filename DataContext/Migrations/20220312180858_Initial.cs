@@ -81,7 +81,6 @@ namespace DataContext.Migrations
                     Filename = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     File_FileId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     File_FileType = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
                     ProcessingStartUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     ProcessingEndUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     ErrorMessage = table.Column<string>(type: "nvarchar(max)", nullable: true),

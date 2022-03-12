@@ -15,8 +15,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataContext", "DataContext\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbEntities", "DbEntities\DbEntities.csproj", "{BFF45587-004E-4C6A-8543-63C126F67EC9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Enumerations", "Enumerations\Enumerations.csproj", "{4960F7BD-5179-4E1F-A294-16FE917B6F01}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,10 +29,6 @@ Global
 		{BFF45587-004E-4C6A-8543-63C126F67EC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BFF45587-004E-4C6A-8543-63C126F67EC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BFF45587-004E-4C6A-8543-63C126F67EC9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4960F7BD-5179-4E1F-A294-16FE917B6F01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4960F7BD-5179-4E1F-A294-16FE917B6F01}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4960F7BD-5179-4E1F-A294-16FE917B6F01}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4960F7BD-5179-4E1F-A294-16FE917B6F01}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
