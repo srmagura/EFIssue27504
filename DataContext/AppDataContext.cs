@@ -20,8 +20,6 @@ namespace DataContext
             DbOrganization.OnModelCreating(modelBuilder);
 
             DbProject.OnModelCreating(modelBuilder);
-
-            DbImport.OnModelCreating(modelBuilder);
         }
 
         public DbSet<DbOrganization> Organizations => Set<DbOrganization>();

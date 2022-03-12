@@ -22,8 +22,6 @@ public class DbProject : DbEntity
 
     public DbFileRef? Photo { get; set; }
 
-    public DbProjectReportOptions ReportOptions { get; set; }
-
     public bool IsActive { get; set; } = true;
 
     public DateTimeOffset? DesignerLockedUtc { get; set; }

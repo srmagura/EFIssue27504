@@ -4,11 +4,6 @@ namespace DbEntities;
 
 public class DbImport : DbEntity
 {
-#nullable disable
-    [Obsolete("For use by Entity Framework only.")]
-    protected DbImport() { }
-#nullable enable
-
     public Guid OrganizationId { get; protected set; }
     public DbOrganization? Organization { get; protected set; }
 
@@ -22,9 +17,4 @@ public class DbImport : DbEntity
     public DateTimeOffset? ProcessingEndUtc { get; protected set; }
 
     public string? ErrorMessage { get; protected set; }
-
-    public static void OnModelCreating(ModelBuilder mb)
-    {
-        // For convention
-    }
 }
