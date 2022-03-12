@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <Configurations>Debug;Release</Configurations>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ITI.Baseline.Audit" Version="3.0.7" />
+    <PackageReference Include="ITI.Baseline.Passwords" Version="3.0.7" />
+    <PackageReference Include="ITI.Baseline.ValueObjects" Version="3.0.7" />
+    <PackageReference Include="ITI.DDD.Infrastructure" Version="3.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domain\Enumerations\Enumerations.csproj" />
+    <ProjectReference Include="..\..\Domain\Identities\Identities.csproj" />
+    <ProjectReference Include="..\..\Domain\ValueObjects\ValueObjects.csproj" />
+  </ItemGroup>
+
+</Project>

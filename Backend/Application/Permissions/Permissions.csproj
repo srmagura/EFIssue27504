@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <Configurations>Debug;Release</Configurations>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ITI.Baseline.Audit" Version="3.0.7" />
+    <PackageReference Include="ITI.DDD.Auth" Version="3.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Data\DataContext\DataContext.csproj" />
+    <ProjectReference Include="..\..\Domain\Identities\Identities.csproj" />
+    <ProjectReference Include="..\DataInterfaces\DataInterfaces.csproj" />
+    <ProjectReference Include="..\InfraInterfaces\InfraInterfaces.csproj" />
+  </ItemGroup>
+
+</Project>

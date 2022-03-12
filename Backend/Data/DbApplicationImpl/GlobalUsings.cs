@@ -1,0 +1,13 @@
+global using AppDTOs;
+global using AutoMapper;
+global using DataContext;
+global using DataInterfaces.Queries;
+global using DataInterfaces.Repositories;
+global using DbEntities;
+global using Entities;
+global using Enumerations;
+global using Identities;
+global using ITI.DDD.Core;
+global using ITI.DDD.Infrastructure;
+global using ITI.DDD.Infrastructure.DataMapping;
+global using Microsoft.EntityFrameworkCore;

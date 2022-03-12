@@ -1,0 +1,56 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build",
+      "isBuildCommand": true,
+      "command": "dotnet",
+      "type": "process",
+      "args": ["build", "../Slateplan.sln"],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "UnitTests",
+      "isTestCommand": true,
+      "command": "dotnet",
+      "type": "process",
+      "args": ["test", "Tests/UnitTests/UnitTests.csproj"],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "IntegrationTests",
+      "isTestCommand": true,
+      "command": "dotnet",
+      "type": "process",
+      "args": ["test", "Tests/IntegrationTests/IntegrationTests.csproj"],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "DevTests",
+      "isTestCommand": true,
+      "command": "dotnet",
+      "type": "process",
+      "args": ["test", "Tests/DevTests/DevTests.csproj"],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "TestDataLoader",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "run",
+        "--project",
+        "DevTools/TestDataLoader/TestDataLoader.csproj"
+      ],
+      "problemMatcher": ["$msCompile"]
+    },
+    {
+      "label": "FunctionApp",
+      "command": "func",
+      "type": "process",
+      "options": { "cwd": "Functions/FunctionApp" },
+      "args": ["start", "-p", "33332"],
+      "problemMatcher": ["$msCompile"]
+    }
+  ]
+}

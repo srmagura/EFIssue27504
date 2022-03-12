@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <Configurations>Debug;Release</Configurations>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ITI.DDD.Application" Version="3.0.7" />
+    <PackageReference Include="ITI.DDD.Domain" Version="3.0.7" />
+    <PackageReference Include="ITI.DDD.Infrastructure" Version="3.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.14" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domain\DomainExceptions\DomainExceptions.csproj" />
+    <ProjectReference Include="..\..\Domain\Entities\Entities.csproj" />
+    <ProjectReference Include="..\..\Domain\Enumerations\Enumerations.csproj" />
+    <ProjectReference Include="..\..\Domain\Identities\Identities.csproj" />
+    <ProjectReference Include="..\..\Domain\ServiceInterfaces\ServiceInterfaces.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\FileImport\FileImport.csproj" />
+    <ProjectReference Include="..\AppDTOs\AppDTOs.csproj" />
+    <ProjectReference Include="..\AppInterfaces\AppInterfaces.csproj" />
+    <ProjectReference Include="..\DataInterfaces\DataInterfaces.csproj" />
+    <ProjectReference Include="..\InfraInterfaces\InfraInterfaces.csproj" />
+    <ProjectReference Include="..\Permissions\Permissions.csproj" />
+  </ItemGroup>
+
+</Project>

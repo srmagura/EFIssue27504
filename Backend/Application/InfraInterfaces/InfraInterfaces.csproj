@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <Configurations>Debug;Release</Configurations>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domain\Entities\Entities.csproj" />
+    <ProjectReference Include="..\..\Domain\Enumerations\Enumerations.csproj" />
+    <ProjectReference Include="..\..\Domain\Identities\Identities.csproj" />
+    <ProjectReference Include="..\AppDTOs\AppDTOs.csproj" />
+    <ProjectReference Include="..\AppInterfaces\AppInterfaces.csproj" />
+  </ItemGroup>
+
+</Project>

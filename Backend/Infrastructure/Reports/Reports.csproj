@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspose.PDF" Version="22.2.0" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="2.0.0" />
+    <PackageReference Include="Svg" Version="3.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Application\DataInterfaces\DataInterfaces.csproj" />
+    <ProjectReference Include="..\..\Application\InfraInterfaces\InfraInterfaces.csproj" />
+    <ProjectReference Include="..\..\Domain\Identities\Identities.csproj" />
+  </ItemGroup>
+
+</Project>

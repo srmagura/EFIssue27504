@@ -1,0 +1,57 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <Configurations>Debug;Release</Configurations>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<None Remove="Resources\billing-rate.pdf" />
+	<None Remove="Resources\construction-drawings.pdf" />
+    <None Remove="Resources\floorplan.pdf" />
+    <None Remove="Resources\frog.jpg" />
+    <None Remove="Resources\mishapedpdf.pdf" />
+	<None Remove="Resources\mwa-dark.png" />
+	<None Remove="Resources\mwa-light.png" />
+	<None Remove="Resources\services-breakdown.pdf" />
+	<None Remove="Resources\system7-dark.svg" />
+	<None Remove="Resources\system7-light.svg" />
+    <None Remove="Resources\toad.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="sp_MSforeachtable.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\frog.jpg" />
+    <EmbeddedResource Include="Resources\mishapedpdf.pdf" />
+    <EmbeddedResource Include="Resources\toad.png" />
+    <EmbeddedResource Include="Resources\floorplan.pdf" />
+	<EmbeddedResource Include="Resources\billing-rates.pdf" />
+	<EmbeddedResource Include="Resources\construction-drawings.pdf" />
+	<EmbeddedResource Include="Resources\services-breakdown.pdf" />
+	<EmbeddedResource Include="Resources\mwa-dark.png" />
+	<EmbeddedResource Include="Resources\mwa-light.png" />
+	<EmbeddedResource Include="Resources\system7-dark.svg" />
+	<EmbeddedResource Include="Resources\system7-light.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SqlServer.SqlManagementObjects" Version="161.46521.71" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.2.8" />
+    <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="16.1.15" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Application\AppConfig\AppConfig.csproj" />
+    <ProjectReference Include="..\..\Application\InfraInterfaces\InfraInterfaces.csproj" />
+    <ProjectReference Include="..\..\Application\Permissions\Permissions.csproj" />
+    <ProjectReference Include="..\..\Domain\Events\Events.csproj" />
+  </ItemGroup>
+
+</Project>
